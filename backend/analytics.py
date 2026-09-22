@@ -15,6 +15,27 @@ def shift_month(value, delta):
     index = y * 12 + m - 1 + delta
     return f'{index // 12:04d}-{index % 12 + 1:02d}'
 
+def recurring_obligations(transactions, today=None):
+    """Estimate the next monthly occurrence, without creating a transaction."""
+    today = today or date.today()
+    latest = {}
+    for transaction in transactions:
+        if transaction.get('recurring') and transaction['type'] == 'Expense':
+            key = (transaction['category'], transaction['description'].strip().lower())
+            if key not in latest or transaction['date'] > latest[key]['date']:
+                latest[key] = transaction
+    result = []
+    for transaction in latest.values():
+        recorded = date.fromisoformat(transaction['date'])
+        month = max(today.strftime('%Y-%m'), shift_month(recorded.isoformat(), 1))
+        year, value = map(int, month.split('-'))
+        due = date(year, value, min(recorded.day, calendar.monthrange(year, value)[1]))
+        if due < today:
+            year, value = map(int, shift_month(month, 1).split('-'))
+            due = date(year, value, min(recorded.day, calendar.monthrange(year, value)[1]))
+        result.append({'name': transaction['description'], 'category': transaction['category'], 'amount': transaction['amount'], 'due_date': due.isoformat()})
+    return sorted(result, key=lambda item: item['due_date'])
+
 def goal_metrics(goal, today=None):
     today = today or date.today()
     target = date.fromisoformat(goal['target_date'])

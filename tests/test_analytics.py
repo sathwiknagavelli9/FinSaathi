@@ -1,6 +1,17 @@
 from datetime import date
 import pytest
-from backend.analytics import ratio, change, goal_metrics, debt_plan, forecast, health_score, summarize
+from backend.analytics import ratio, change, goal_metrics, debt_plan, forecast, health_score, summarize, recurring_obligations
+
+def test_recurring_expense_deduplication_and_short_month():
+    rows = [
+        {**tx('2025-01', 100), 'date': '2025-01-31', 'description': 'Rent', 'recurring': True},
+        {**tx('2024-12', 90), 'description': 'Rent', 'recurring': True},
+        {**tx('2025-01', 20), 'description': 'One-off', 'recurring': False},
+    ]
+    upcoming = recurring_obligations(rows, date(2025, 2, 1))
+    assert len(upcoming) == 1
+    assert upcoming[0]['due_date'] == '2025-02-28'
+    assert upcoming[0]['amount'] == 100
 from backend.validation import number, record
 
 def tx(month, amount, kind='Expense', category='Food'):

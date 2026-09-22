@@ -120,7 +120,7 @@ export function Dashboard({ data }: { data: Summary }) {
           subtitle="Expense breakdown for the selected month"
         >
           {data.categories.length ? (
-              <Donut data={data.categories} />
+            <Donut data={data.categories} />
           ) : (
             <Empty
               title="No expenses yet"
@@ -209,7 +209,9 @@ export function Dashboard({ data }: { data: Summary }) {
           title="Upcoming obligations"
           subtitle="Keep the next steps in view"
         >
-          {data.debts.length || active.length ? (
+          {data.debts.length ||
+          active.length ||
+          data.recurring_obligations.length ? (
             <div className="rows">
               {data.debts.slice(0, 3).map((d) => (
                 <div className="spread" key={d.id}>
@@ -231,11 +233,22 @@ export function Dashboard({ data }: { data: Summary }) {
                   <strong>{money(g.required_monthly)}</strong>
                 </div>
               ))}
+              {data.recurring_obligations.slice(0, 3).map((item) => (
+                <div className="spread" key={item.category + item.name}>
+                  <div>
+                    <strong>{item.name}</strong>
+                    <p className="small">
+                      Estimated monthly recurrence · {item.due_date}
+                    </p>
+                  </div>
+                  <strong>{money(item.amount)}</strong>
+                </div>
+              ))}
             </div>
           ) : (
             <Empty
               title="Nothing upcoming yet"
-              text="Debts and goal contributions will be shown here."
+              text="Debts, recurring expenses and goal contributions will be shown here."
             />
           )}
         </Card>

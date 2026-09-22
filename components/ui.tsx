@@ -210,7 +210,7 @@ export function Modal({
     return () => node?.close();
   }, []);
   return (
-    <dialog ref={ref} className="modal" onCancel={onClose}>
+    <dialog ref={ref} className="modal" onCancel={onClose} aria-label={title}>
       <div className="modal-title">
         <h2>{title}</h2>
         <button

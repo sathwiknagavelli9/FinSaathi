@@ -6,7 +6,7 @@ from flask import g, request, jsonify
 from backend.db import database, public
 from backend.auth import require_user, now, rate_limit
 from backend.records import owner_id
-from backend.analytics import summarize, debt_plan
+from backend.analytics import summarize, debt_plan, recurring_obligations
 from backend import validation as v
 
 def summary():
@@ -18,6 +18,7 @@ def summary():
     db = database()
     rows = {kind: [public(d) for d in db[kind].find({'user_id': g.uid, **({'month': month} if kind == 'budgets' else {})})] for kind in ['transactions', 'budgets', 'goals', 'debts', 'investments']}
     result = summarize(rows['transactions'], rows['budgets'], rows['goals'], rows['debts'], rows['investments'], g.user, month, start, end)
+    result['recurring_obligations'] = recurring_obligations(rows['transactions'])
     if not start and not end and month == date.today().strftime('%Y-%m'):
         if result['health']['score'] is not None:
             db.health_scores.update_one({'user_id': g.uid, 'month': month}, {'$set': {'score': result['health']['score'], 'updated_at': now()}, '$setOnInsert': {'created_at': now()}}, upsert=True)

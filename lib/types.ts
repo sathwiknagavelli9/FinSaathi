@@ -129,4 +129,10 @@ export type Summary = {
   insights: string[];
   recent: Transaction[];
   health_history: { month: string; score: number }[];
+  recurring_obligations: {
+    name: string;
+    category: string;
+    amount: number;
+    due_date: string;
+  }[];
 };
