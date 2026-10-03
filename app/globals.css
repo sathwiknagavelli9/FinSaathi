@@ -1304,12 +1304,16 @@ td.description {
   gap: 18px;
   margin: 20px 0;
 }
+.chat-messages .stack {
+  min-width: 0;
+}
 .chat-bubble {
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: 12px;
   padding: 18px;
   max-width: 90%;
+  min-width: 0;
   white-space: pre-wrap;
   font-size: 14px;
 }
@@ -1325,6 +1329,7 @@ td.description {
   margin-bottom: 6px;
 }
 .chat-answer {
+  min-width: 0;
   white-space: normal;
   overflow-wrap: anywhere;
 }
