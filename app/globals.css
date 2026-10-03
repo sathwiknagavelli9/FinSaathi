@@ -1318,11 +1318,50 @@ td.description {
   background: var(--teal-soft);
   border: 0;
 }
-.chat-bubble strong {
+.chat-bubble > strong {
   display: block;
   font-size: 11px;
   color: var(--teal);
   margin-bottom: 6px;
+}
+.chat-answer {
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+.chat-answer > :first-child {
+  margin-top: 0;
+}
+.chat-answer > :last-child {
+  margin-bottom: 0;
+}
+.chat-answer p,
+.chat-answer ul,
+.chat-answer ol {
+  margin: 8px 0;
+}
+.chat-answer ul,
+.chat-answer ol {
+  padding-left: 20px;
+}
+.chat-answer table,
+.chat-answer pre {
+  display: block;
+  max-width: 100%;
+  overflow-x: auto;
+}
+.chat-answer table {
+  border-collapse: collapse;
+  margin: 10px 0;
+}
+.chat-answer th,
+.chat-answer td {
+  border: 1px solid var(--border);
+  padding: 6px 8px;
+  text-align: left;
+}
+.chat-answer a {
+  color: var(--teal);
+  text-decoration: underline;
 }
 .chat-compose {
   display: flex;

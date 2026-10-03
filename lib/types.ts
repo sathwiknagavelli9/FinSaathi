@@ -77,6 +77,7 @@ export type Alert = {
   read: boolean;
 };
 export type Summary = {
+  as_of: string;
   month: string;
   start: string;
   end: string;

@@ -1,6 +1,8 @@
 "use client";
 import { useEffect, useState, useCallback } from "react";
 import Link from "next/link";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 import { useTheme } from "next-themes";
 import { useRouter } from "next/navigation";
 import { Bell, Check, Send, Sparkles, X } from "lucide-react";
@@ -171,7 +173,9 @@ export function Assistant() {
             </div>
             <div className="chat-bubble">
               <strong>FinSaathi AI</strong>
-              {h.reply}
+              <div className="chat-answer">
+                <ReactMarkdown remarkPlugins={[remarkGfm]}>{h.reply}</ReactMarkdown>
+              </div>
             </div>
           </div>
         ))}

@@ -206,7 +206,7 @@ export function Dashboard({ data }: { data: Summary }) {
           )}
         </Card>
         <Card
-          title="Upcoming obligations"
+          title="Payments and obligations"
           subtitle="Keep the next steps in view"
         >
           {data.debts.length ||
@@ -218,7 +218,9 @@ export function Dashboard({ data }: { data: Summary }) {
                   <div>
                     <strong>{d.name}</strong>
                     <p className="small">
-                      {d.due_date || "Monthly debt payment"}
+                      {d.due_date
+                        ? `${d.due_date < data.as_of ? "Overdue since" : "Due"} · ${d.due_date}`
+                        : "Monthly debt payment"}
                     </p>
                   </div>
                   <strong>{money(d.payment)}</strong>

@@ -12,6 +12,11 @@ def test_recurring_expense_deduplication_and_short_month():
     assert len(upcoming) == 1
     assert upcoming[0]['due_date'] == '2025-02-28'
     assert upcoming[0]['amount'] == 100
+
+
+def test_summary_exposes_reference_date_for_due_labels():
+    result = summarize([], [], [], [], [], {}, date.today().strftime('%Y-%m'))
+    assert result['as_of'] == date.today().isoformat()
 from backend.validation import number, record
 
 def tx(month, amount, kind='Expense', category='Food'):
